@@ -1,0 +1,213 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05.12.2020, 13:18:05
+    Author     : user
+*/
+.mainDiv{
+    width: 100%; height: 100%; /* Размеры */
+    background: #666666;
+}
+.headerDiv{
+    text-align: center;
+    font-size: 25px;
+    line-height: 0.1em;  /*Межстрочный отступ*/
+}
+.checkNotarialDocumentBody{
+    margin-bottom: 10px;
+}
+.checkCalendarHeader{
+    margin-left: -28px;
+}
+.calendarScrollHeader{
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+
+}
+.calendarScroll{  
+    overflow-x:scroll;
+    overflow-y:hidden;
+    width:50%;
+    height:28px;
+    display: inline-block;
+    
+}
+.calendarScrollInner{
+    width:300%;
+    height:18px;
+}
+.calendarBlockRemark{
+    margin-left: 28px;
+    font-size: 15px;
+}
+.calendarBody{
+    margin-left: 38px;
+    height: 230px;
+    width: 90%;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+.checkCalendarBody{
+    margin-left: -38px;
+    height: 230px;
+    width: 220%;
+}
+.liCalendarDiv{
+     margin-top: 28px;
+     display: inline-block;
+     vertical-align: top;
+     border-right: 2px solid whitesmoke;
+}
+.liDates{
+    margin-right: 18px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+}
+.labelDate{
+    font-size: 15px;
+}
+.youChoiceDiv{
+    height: 20px;
+}
+.youChoiceLabel{
+    margin-left: 58px;
+}
+.loadFilesBody{
+    margin-left: 50px;
+}
+.loadFilesBtn{
+    width: 320px;
+}
+.signUp{
+    margin-left: 50px;
+}
+.signUpBtn{
+    width: 200px;
+}
+.addressTelefonDiv{
+    margin-bottom: 10px;
+}
+.addressTelefonLabel{
+    width: 25%;
+}
+.controlAddressInput{
+    width: 60%;
+    border: none;
+    border-bottom: 2px solid whitesmoke;
+}
+.controlTelefonInput{
+    width: 30%;
+    border: none;
+}
+.controlBtns{
+    text-align: center;
+}
+.controlLabeDiv{
+    text-align: center;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+/*-------общие классы----------*/
+.commonStyle{
+    width: 80%; height: 100%px; /* Размеры */
+    background: white; /* Цвет фона */
+    /*border: 3px solid grey; /* Белая рамка */
+    /*border-radius: 10px; /* Радиус скругления */
+    margin:0px 10% 0px 10%; /*Отступы сверху слева снизу справа*/
+    display: inline-block;
+}
+.fontFamilyStyle{
+    font-family: Arial;
+}
+.colorWeightHeaderFont{
+    color: #000099;
+    font-weight: bold; 
+        
+}
+.listStyle{
+    list-style-type: none;
+    margin-left: 15px; /* Отступ слева */
+    font-size: 15px;
+}
+/*Заголовки в общих Div*/
+.headsOfCommonDivs{
+    text-indent: 1.5em;
+    font-size: 18px;
+    line-height: 0.1em;  /*Межстрочный отступ*/
+}
+.button{
+    height: 28px;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px 5px 10px 5px;
+}
+.redColor{
+    color: #cc3333;
+}
+.inlineBlock{
+    display: inline-block;
+}
+.text-right{
+    text-align: right;
+}
+.commonFontSize{
+    font-size: 15px;
+}
+.borderBottom{
+    border-bottom: 2px solid whitesmoke;
+}
+
+/*Модальные окна*/
+.modalDialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99999;
+    /*
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;*/
+    display: none;
+    pointer-events: none;
+}
+.modalDialog:target {
+    display: block;
+    pointer-events: auto;
+}
+ 
+.modalDialog > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+}
+.close {
+    cursor: pointer;
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;/*
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;*/
+    border-radius: 12px;/*
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;*/
+}
+.close:hover { background: #00d9ff; }
