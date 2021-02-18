@@ -2,6 +2,7 @@ package ru.notariat.client.db.objects;
 
 public class Document {
 	
+	private int id;
 	private String name;
 	private String record_type;
 	
@@ -13,6 +14,12 @@ public class Document {
 		super();
 		this.name = name;
 		this.record_type = record_type;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;

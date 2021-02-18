@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,11 +43,7 @@ public class LoginController {
 		return new ModelAndView("main", "user", user);
 	}
 	
-//	@RequestMapping(value = "/loginForm", method = RequestMethod.GET) 
-//	public ModelAndView failed(){
-//		
-//		return new ModelAndView("loginForm", "user", new UserMVC());
-//	}
+	
 	
 	
 }

@@ -25,6 +25,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	
 	<context:component-scan base-package="ru.notariat.client.*" />
 	<aop:aspectj-autoproxy />
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />

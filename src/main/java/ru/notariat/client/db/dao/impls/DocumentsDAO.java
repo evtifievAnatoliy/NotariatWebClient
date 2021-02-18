@@ -74,7 +74,7 @@ public class DocumentsDAO implements DocumentsDB{
 	@Override
 	public List<Document> getDocumentListByType(String type) throws MySQLExeptions {
 		try {
-			String sql = "select doc.name as documentName, r_types.name as typeName from"
+			String sql = "select doc.id as documentId, doc.name as documentName, r_types.name as typeName from"
 					+ "		notarius.documents doc"
 					+ "	    inner join notarius.record_types r_types"
 					+ "			on doc.record_types_id = r_types.id"
@@ -93,6 +93,7 @@ public class DocumentsDAO implements DocumentsDB{
 			
 		public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Document document = new Document();
+			document.setId(rs.getInt("documentId"));
 			document.setName(rs.getString("documentName"));
 			document.setRecord_type(rs.getString("typeName"));
 			return document;
