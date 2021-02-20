@@ -58,7 +58,7 @@ private NamedParameterJdbcTemplate jdbcTemplate;
 	@Override
 	public List<ReceptionTimestamp> getListReseptionTimestamps(Timestamp firstStamp, Timestamp secondStamp) throws MySQLExeptions {
 		try {
-			String sql = "select timeStamps.name as timeStampName, timeStamps.reception_timestamp as receptionTimestamp"
+			String sql = "select timeStamps.id as timeStampId, timeStamps.name as timeStampName, timeStamps.reception_timestamp as receptionTimestamp"
 						+ " from notarius.reception_timestamps timeStamps"
 						+ "		where timeStamps.reception_timestamp"
 						+ "			between str_to_date(:firstStamp, '%Y-%m-%d %H:%i:%s') \r\n"
@@ -77,6 +77,7 @@ private NamedParameterJdbcTemplate jdbcTemplate;
 		
 		public ReceptionTimestamp mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ReceptionTimestamp receptionTimestamp = new ReceptionTimestamp();
+			receptionTimestamp.setId(rs.getInt("timeStampId"));
 			receptionTimestamp.setName(rs.getString("timeStampName"));
 			receptionTimestamp.setReceptionTimestamp(rs.getTimestamp("receptionTimestamp"));
 			return receptionTimestamp;

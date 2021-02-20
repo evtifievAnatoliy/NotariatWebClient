@@ -42,8 +42,8 @@ public class RestServicesController {
 	public List<ReceptionTimestamp> getTimeStampsListJson(@RequestParam("firstStamp") String firstStamp, @RequestParam("secondStamp") String secondStamp){
 		
 		try {
-			Timestamp firstTimestamp = Timestamp.valueOf(firstStamp);
-			Timestamp secondTimestamp = Timestamp.valueOf(secondStamp);
+			Timestamp firstTimestamp = new Timestamp(Long.parseLong(firstStamp));
+			Timestamp secondTimestamp = new Timestamp(Long.parseLong(secondStamp));
 			return receptionTimestampDAO.getListReseptionTimestamps(firstTimestamp, secondTimestamp);
 		}
 		catch (Exception e) {

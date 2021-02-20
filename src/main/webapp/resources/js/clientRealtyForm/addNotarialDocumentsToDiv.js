@@ -2,21 +2,14 @@
 /*новые документы */
 'use strict';
 
-(function (){
+var onErrorDocuments = function (message) {
+	alert(message);
+}
 
-    var notarialDocuments = [
-        'Договор дарения, купли-продажи объекта недвижимости',
-        'Договор мены двух объектов недвижимости',
-        'Соглашение о расторжении, изменении договоров',
-        'Договор займа',
-        'Договор дарения (кроме недвижимого имущества)',
-        'Договоры ренты',
-        'Договоры залога',
-        'Раздел имущества',
-        'Брачный договор',
-        'Соглашение об алиментах',
-        'Соглашение об определении долей, о порядке пользов. комнатами'];
+var onSuccessDocuments= function (data){
 
+	var notarialDocuments = xhrDocuments.response;
+	
     /*Находим в DOM div ,в который отвечает за отображения списка нот. документов*/
     var listNotarialDocuments = document.querySelector('.checkNotarialDocumentBody');
 
@@ -27,8 +20,8 @@
         /*Клонируем шаблон*/
         var newNotarialDocument = similarNotarialDocument.cloneNode(true);
         /*изменяем значение элементов в добавляемом документе*/
-        newNotarialDocument.querySelector('.inputLiNotarialDocument').value = i;
-        newNotarialDocument.querySelector('.labelLiNotarialDocument').innerText = notarialDocuments[i];
+        newNotarialDocument.querySelector('.inputLiNotarialDocument').value = i.id;
+        newNotarialDocument.querySelector('.labelLiNotarialDocument').innerText = notarialDocuments[i].name;
         /*Добавляем в список*/
         listNotarialDocuments.appendChild(newNotarialDocument);
     }
@@ -48,6 +41,37 @@
                 checkNotarialDocument(evt.target.value);
         });
     }
-    */
+    */	
 
-})();
+};
+
+	
+var xhrDocuments = new XMLHttpRequest();
+xhrDocuments.responseType = 'json';
+
+
+xhrDocuments.addEventListener('load', function(){
+	var error;
+	switch (xhrDocuments.status){
+		case 200:
+			onSuccessDocuments(xhrDocuments.response);
+			break;
+		case 400:
+			error= 'Неверный запрос';
+			break;
+		case 401:
+			error= 'Пользователь не авторизован';
+			break;
+		case 404:
+			error= 'Ничего не найдено';
+			break;
+		default:
+			error= 'Статус ответа: : ' + xhr.status + ' ' + shr.statusText;
+	}
+	if (error){
+		onErrorDocuments(error);
+	}
+});
+
+xhrDocuments.open('GET','http://localhost:8080/client//get-json-documentsList?documentType=Realty');
+xhrDocuments.send();
