@@ -1,8 +1,6 @@
 
 'use strict';
 
-var addNewLabel;
-
 (function (){
 
     var signUpBtn = document.querySelector('.signUpBtn');
@@ -21,9 +19,6 @@ var addNewLabel;
     var similarCalendarBody = document.querySelector('.calendarBody');
 	
 	
-
-	
-
     /*Очистка popUp*/
     var clearPopUp = function (){
         modalDialog.classList.remove('redColor');
@@ -40,7 +35,7 @@ var addNewLabel;
 
         /*Проверка на выбор нотариального документа*/
         var listCheckBoxNotarialDocuments = document.querySelectorAll('.inputLiNotarialDocument');
-        var isChecked = validationOfCheckBaxes(listCheckBoxNotarialDocuments);
+        var isChecked = validationOfCheckBoxes(listCheckBoxNotarialDocuments);
         if (!isChecked){
             addNewLabel('Выберите действие (несколько действий)');
             isSingUpValidation = false;
@@ -48,7 +43,7 @@ var addNewLabel;
 
         /*проверка на выбор времени*/
         var listCheckBoxTimes = document.querySelectorAll('.inputLiTime');
-        isChecked = validationOfCheckBaxes(listCheckBoxTimes);
+        isChecked = validationOfCheckBoxes(listCheckBoxTimes);
         if (!isChecked){
             addNewLabel('Выберите дату и время');
             isSingUpValidation = false;
@@ -84,11 +79,39 @@ var addNewLabel;
             modalDialog.classList.add('colorWeightHeaderFont');
             addNewLabel(document.querySelector('.youChoiceLabel').innerText);
             
+            /*------------Отправляем запрос на добавление записи на срвер. В ответ получаем номер записи*/
 			var test = {"name":"Tolic","lastName":"Evtifiev"};
 			var json = JSON.stringify(test);
-            xhrAddNewRecord.send(json);
-            
-            /*addNewLabel('Номер записи:' + responseAddNewRecord);*/
+            var xhrAddNewRecord = new XMLHttpRequest();
+			var onResponseAddNewRecord= function (data){
+				addNewLabel('Номер записи:' + data);
+			};
+			xhrAddNewRecord.addEventListener('load', function(){
+				var error;
+				switch (xhrAddNewRecord.status){
+					case 200:
+						onResponseAddNewRecord(xhrAddNewRecord.response);
+						break;
+					case 400:
+						error= 'Неверный запрос';
+						break;
+					case 401:
+						error= 'Пользователь не авторизован';
+						break;
+					case 404:
+						error= 'Ничего не найдено';
+						break;
+					default:
+						error= 'Статус ответа: : ' + AddNewRecord.status + ' ' + AddNewRecord.statusText;
+				}
+				if (error){
+					onResponseAddNewRecord(error);
+				}
+			});
+			xhrAddNewRecord.open("POST", "http://localhost:8080/client/put-json-new-record");
+			xhrAddNewRecord.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+			xhrAddNewRecord.send(json);
+			/*!----------Отправляем запрос на добавление записи на срвер. В ответ получаем номер записи*/
         }
 
     }
@@ -179,7 +202,7 @@ var addNewLabel;
     }
 
     /*методы для singUpValidation*/
-    var validationOfCheckBaxes = function (listCheckBoxes){
+    var validationOfCheckBoxes = function (listCheckBoxes){
         for (var i=0; i<listCheckBoxes.length; i++){
             if(listCheckBoxes[i].checked){
                 return true;
@@ -188,7 +211,7 @@ var addNewLabel;
         return false;
     }
 
-    addNewLabel = function (text){
+    var addNewLabel = function (text){
         var newLabel = similarLabel.cloneNode(true);
         newLabel.innerText = text;
         modalDialogBody.appendChild(newLabel);
@@ -224,36 +247,5 @@ var addNewLabel;
 })();
 
 
-var xhrAddNewRecord = new XMLHttpRequest();
 
-var onResponseAddNewRecord= function (data){
-	addNewLabel('Номер записи:' + data);
-};
-
-
-xhrAddNewRecord.addEventListener('load', function(){
-	var error;
-	switch (xhrAddNewRecord.status){
-		case 200:
-			onResponseAddNewRecord(xhrAddNewRecord.response);
-			break;
-		case 400:
-			error= 'Неверный запрос';
-			break;
-		case 401:
-			error= 'Пользователь не авторизован';
-			break;
-		case 404:
-			error= 'Ничего не найдено';
-			break;
-		default:
-			error= 'Статус ответа: : ' + AddNewRecord.status + ' ' + AddNewRecord.statusText;
-	}
-	if (error){
-		onResponseAddNewRecord(error);
-	}
-});
-
-xhrAddNewRecord.open("POST", "http://localhost:8080/client/put-json-new-record");
-xhrAddNewRecord.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
