@@ -1,6 +1,8 @@
 
 'use strict';
 
+var addNewLabel;
+
 (function (){
 
     var signUpBtn = document.querySelector('.signUpBtn');
@@ -17,9 +19,10 @@
     var similarSendBtn = document.querySelector('.templateBtn').content.querySelector('.sendBtn');
     var similarLoadFilesBody = document.querySelector('.loadFilesBody');
     var similarCalendarBody = document.querySelector('.calendarBody');
+	
+	
 
-
-
+	
 
     /*Очистка popUp*/
     var clearPopUp = function (){
@@ -80,7 +83,12 @@
         else{
             modalDialog.classList.add('colorWeightHeaderFont');
             addNewLabel(document.querySelector('.youChoiceLabel').innerText);
-            addNewLabel('Номер записи:');
+            
+			var test = {"name":"Tolic","lastName":"Evtifiev"};
+			var json = JSON.stringify(test);
+            xhrAddNewRecord.send(json);
+            
+            /*addNewLabel('Номер записи:' + responseAddNewRecord);*/
         }
 
     }
@@ -180,7 +188,7 @@
         return false;
     }
 
-    var addNewLabel = function (text){
+    addNewLabel = function (text){
         var newLabel = similarLabel.cloneNode(true);
         newLabel.innerText = text;
         modalDialogBody.appendChild(newLabel);
@@ -214,3 +222,38 @@
     });
 
 })();
+
+
+var xhrAddNewRecord = new XMLHttpRequest();
+
+var onResponseAddNewRecord= function (data){
+	addNewLabel('Номер записи:' + data);
+};
+
+
+xhrAddNewRecord.addEventListener('load', function(){
+	var error;
+	switch (xhrAddNewRecord.status){
+		case 200:
+			onResponseAddNewRecord(xhrAddNewRecord.response);
+			break;
+		case 400:
+			error= 'Неверный запрос';
+			break;
+		case 401:
+			error= 'Пользователь не авторизован';
+			break;
+		case 404:
+			error= 'Ничего не найдено';
+			break;
+		default:
+			error= 'Статус ответа: : ' + AddNewRecord.status + ' ' + AddNewRecord.statusText;
+	}
+	if (error){
+		onResponseAddNewRecord(error);
+	}
+});
+
+xhrAddNewRecord.open("POST", "http://localhost:8080/client/put-json-new-record");
+xhrAddNewRecord.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
