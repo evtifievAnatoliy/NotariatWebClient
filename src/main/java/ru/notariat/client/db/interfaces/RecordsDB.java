@@ -11,7 +11,8 @@ import ru.notariat.client.exeptions.MySQLExeptions;
 
 public interface RecordsDB {
 	
-	public int insetNewRecord(User user, Timestamp timestamp, Notarius notarius, List<Document> documentsList) throws MySQLExeptions; 
+	public int insetNewRecord(User user, int timestampId, Notarius notarius, List<Integer> documentsIdList) throws MySQLExeptions; 
 	public boolean changeRecordStaus(int id, String statusOfRecord) throws MySQLExeptions;
+	boolean changeTimeStampOfRecord(int id, Timestamp newTimestamp) throws MySQLExeptions;
 
 }

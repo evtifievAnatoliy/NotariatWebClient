@@ -36,17 +36,37 @@
         /*Проверка на выбор нотариального документа*/
         var listCheckBoxNotarialDocuments = document.querySelectorAll('.inputLiNotarialDocument');
         var isChecked = validationOfCheckBoxes(listCheckBoxNotarialDocuments);
+        var checkedNotarialDocuments =[];
         if (!isChecked){
             addNewLabel('Выберите действие (несколько действий)');
             isSingUpValidation = false;
+        }
+        if (isChecked){
+        	var index = 0;
+        	for (var i=0; i<listCheckBoxNotarialDocuments.length; i++){
+                if(listCheckBoxNotarialDocuments[i].checked){
+					checkedNotarialDocuments[index] = listCheckBoxNotarialDocuments[i].id;
+					index++;
+                }
+            }
         }
 
         /*проверка на выбор времени*/
         var listCheckBoxTimes = document.querySelectorAll('.inputLiTime');
         isChecked = validationOfCheckBoxes(listCheckBoxTimes);
+        var checkedTime;
         if (!isChecked){
             addNewLabel('Выберите дату и время');
             isSingUpValidation = false;
+        }
+        if (isChecked){
+        	var index = 0;
+        	for (var i=0; i<listCheckBoxTimes.length; i++){
+                if(listCheckBoxTimes[i].checked){
+					checkedTime = listCheckBoxTimes[i].id;
+					index++;
+                }
+            }
         }
 
         /*Проверка адреса объекта*/
@@ -65,8 +85,8 @@
         }
 
         /*Проверка телефона для связи*/
-        var addressInput = document.querySelector('.controlTelefonInput');
-        if (addressInput.validity.valueMissing){
+        var telephoneInput = document.querySelector('.controlTelefonInput');
+        if (telephoneInput.validity.valueMissing){
             addNewLabel('Введите телефон для связи');
             isSingUpValidation = false;
         }
@@ -80,8 +100,15 @@
             addNewLabel(document.querySelector('.youChoiceLabel').innerText);
             
             /*------------Отправляем запрос на добавление записи на срвер. В ответ получаем номер записи*/
-			var test = {"name":"Tolic","lastName":"Evtifiev"};
-			var json = JSON.stringify(test);
+            
+            
+			var responceObject = {
+				documentsId : checkedNotarialDocuments,
+				timeId : checkedTime,
+            	address : addressInput.value,
+            	telephone : telephoneInput.value
+            };
+			var json = JSON.stringify(responceObject);
             var xhrAddNewRecord = new XMLHttpRequest();
 			var onResponseAddNewRecord= function (data){
 				addNewLabel('Номер записи:' + data);
@@ -199,6 +226,39 @@
         addNewLabel('');
         var newSendBtn = similarSendBtn.cloneNode(true);
         modalDialogBody.appendChild(newSendBtn);
+        newSendBtn.addEventListener('click', function() {      
+		    /*------------Отправляем запрос на удаление записи на сервер. В ответ получаем строку с ответом*/
+		    var xhrDelRecord = new XMLHttpRequest();
+			var onResponseDelRecord= function (data){
+				addNewLabel('Номер записи:' + data);
+			};
+			xhrDelRecord.addEventListener('load', function(){
+				var error;
+				switch (xhrDelRecord.status){
+					case 200:
+						onResponseDelRecord(xhrDelRecord.response);
+						break;
+					case 400:
+						error= 'Неверный запрос';
+						break;
+					case 401:
+						error= 'Пользователь не авторизован';
+						break;
+					case 404:
+						error= 'Ничего не найдено';
+						break;
+					default:
+						error= 'Статус ответа: : ' + xhrDelRecord.status + '  ' + xhrDelRecord.statusText;
+				}
+			if (error){
+				onResponseDelRecord(error);
+			}
+			});
+			xhrDelRecord.open('DELETE', 'http://localhost:8080/client/delete-record?recordId=' + newInput.value + '&userTelephone=' + newControlTelefonInput.value);
+			xhrDelRecord.send();
+			
+			/*!----------Отправляем запрос на удаление записи на сервер.*/
+	    });   
     }
 
     /*методы для singUpValidation*/
@@ -243,6 +303,8 @@
         clickRemoveZapisBtn();
         openModalHref.click();
     });
+    
+    
 
 })();
 

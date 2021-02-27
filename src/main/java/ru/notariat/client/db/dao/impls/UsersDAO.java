@@ -32,11 +32,11 @@ public class UsersDAO implements UsersDB{
 	public int getUserId(User user) {
 		String sql = "select users.id "
 				+ "	from notarius.users users "
-				+ "		where upper(users.email) = upper(:userEmail) limit 1";
+				+ "		where upper(users.telephone) = upper(:userTelephone) limit 1";
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("userEmail", user.getEmail());
 		params.addValue("userFio", user.getFio());
-		params.addValue("userTelephone", user.getTelephone());
+		params.addValue("userTelephone", user.getTelephone().replaceAll("[-() ]", ""));
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		int userId;
 		try {
@@ -52,6 +52,36 @@ public class UsersDAO implements UsersDB{
 		}
 		return userId;
 	}
+	
+	@MyExeption
+	@Override
+	public boolean checkUserByTelephoneAndRecordId(String userTelephone, int recordId) throws MySQLExeptions {
+		try {
+			
+			String correctUserTelephoneString = "+" + userTelephone.replaceAll("[-() ]", "");
+			String sql = "select users.id "
+					+ "	from notarius.users users "
+					+ "inner join notarius.records records on users.id = records.users_id"
+					+ "		where upper(users.telephone) = upper(:userTelephone) "
+					+ "and records.id = :recordId limit 1";
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("userTelephone", correctUserTelephoneString);
+			params.addValue("recordId", recordId);
+			try {
+				int userIdFromDB = jdbcTemplate.queryForObject(sql, 
+					params, Integer.class);
+				return true;
+			}
+			catch (Exception e) {
+				return false;
+			}
+		}
+		catch (DataAccessException e) {
+			throw new MySQLExeptions("Ошибка проверки пользователя в таблице Users (метод checkUserByTelephone). Error: " + e.getMessage());
+		}
+		
+	}
+
 	
 	@MyExeption
 	@Override

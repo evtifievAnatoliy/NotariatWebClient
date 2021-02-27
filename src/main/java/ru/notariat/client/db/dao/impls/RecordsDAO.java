@@ -49,7 +49,7 @@ public class RecordsDAO implements RecordsDB{
 	@MyExeption
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE,rollbackFor = Exception.class)
 	@Override
-	public int insetNewRecord(User user, Timestamp timestamp, Notarius notarius, List<Document> documentsList) throws MySQLExeptions {
+	public int insetNewRecord(User user, int timestampId, Notarius notarius, List<Integer> documentsIdList) throws MySQLExeptions {
 		try {
 			
 			System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
@@ -58,7 +58,6 @@ public class RecordsDAO implements RecordsDB{
 			int userId = users.getUserId(user);
 			params.addValue("userId", userId);
 			
-			int timestampId = receptionTimestamps.getReceptionTimestampID(timestamp);
 			params.addValue("timestampId", timestampId);
 			
 			KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -71,16 +70,14 @@ public class RecordsDAO implements RecordsDB{
 			int insertRecordId = keyHolder.getKey().intValue();
 			params.addValue("insertRecordId", insertRecordId);
 			
-			for (Document document: documentsList) {
-				int docId = documents.getDocId(document);
-				insertInRecords_has_documents(docId, insertRecordId);
-									
+			for (Integer documentId: documentsIdList) {
+				insertInRecords_has_documents(documentId, insertRecordId);
 			}
 			
 			return insertRecordId;
 		}
 		catch (DataAccessException e) {
-			throw new MySQLExeptions("Ошибка добавления Новой записи к таблице Records. Error: " + e.getMessage());
+			throw new MySQLExeptions("Ошибка добавления Новой записи к таблице Records. Метод insetNewRecord. Error: " + e.getMessage());
 		}
 	}
 	
@@ -101,7 +98,31 @@ public class RecordsDAO implements RecordsDB{
 				return false;
 			}
 			catch (Exception e) {
-				throw new MySQLExeptions("Ошибка изменения статуса записи к таблице Records. Error: " + e.getMessage());
+				throw new MySQLExeptions("Ошибка изменения статуса записи к таблице Records. Метод changeRecordStaus. Error: " + e.getMessage());
+			}
+	}
+	
+	@MyExeption
+	@Override
+	public boolean changeTimeStampOfRecord(int id, Timestamp newTimestamp) throws MySQLExeptions {
+		try {
+			
+			int timestampId = receptionTimestamps.getReceptionTimestampID(newTimestamp);
+			
+			String sql = "update notarius.records "
+					+ "	set records.reception_timestamps_id = :timestampId "
+					+ "    where records.id = :recordId";
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("recordId", id);
+			params.addValue("timestampId", timestampId);
+			int sumChangedRecords = jdbcTemplate.update(sql, params);
+			if (sumChangedRecords>0)
+				return true;
+			else
+				return false;
+			}
+			catch (Exception e) {
+				throw new MySQLExeptions("Ошибка изменения времени записи к таблице Records. Метод changeTimeStampOfRecord. Error: " + e.getMessage());
 			}
 	}
 

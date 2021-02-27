@@ -8,4 +8,5 @@ public interface UsersDB{
 	public int getUserId (User user);
 	public boolean checkUserByEmailAndPass (User user) throws MySQLExeptions;
 	public boolean chekUserGroup(User user, String groupType) throws MySQLExeptions;
+	boolean checkUserByTelephoneAndRecordId(String userTelephone, int recordId) throws MySQLExeptions;
 }

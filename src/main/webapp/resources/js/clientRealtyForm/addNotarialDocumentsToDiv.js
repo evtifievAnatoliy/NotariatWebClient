@@ -21,6 +21,7 @@ var onSuccessDocuments= function (data){
         var newNotarialDocument = similarNotarialDocument.cloneNode(true);
         /*изменяем значение элементов в добавляемом документе*/
         newNotarialDocument.querySelector('.inputLiNotarialDocument').value = i.id;
+        newNotarialDocument.querySelector('.inputLiNotarialDocument').id = notarialDocuments[i].id;
         newNotarialDocument.querySelector('.labelLiNotarialDocument').innerText = notarialDocuments[i].name;
         /*Добавляем в список*/
         listNotarialDocuments.appendChild(newNotarialDocument);

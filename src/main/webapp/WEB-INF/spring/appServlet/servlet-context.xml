@@ -32,9 +32,8 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*"/>
+			<mvc:mapping path="/loginForm/*"/>
 		 	<bean class="ru.notariat.client.mvc.interceptors.CheckUserInterceptor"/>
-			
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
