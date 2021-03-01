@@ -34,6 +34,7 @@ public class RestServicesController {
 	private static final Logger logger = LoggerFactory.getLogger(RestServicesController.class);
 
 	
+	
 	@Autowired
 	private DocumentsDB documentsDAO; 
 

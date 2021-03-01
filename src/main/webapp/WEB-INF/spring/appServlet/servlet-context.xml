@@ -35,6 +35,26 @@
 			<mvc:mapping path="/loginForm/*"/>
 		 	<bean class="ru.notariat.client.mvc.interceptors.CheckUserInterceptor"/>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/get-json-documentsList"/>
+		 	<bean class="ru.notariat.client.mvc.interceptors.GetJsonDocumentsListIntercepter"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/get-json-timeStampsList"/>
+		 	<bean class="ru.notariat.client.mvc.interceptors.GetJsonTimeStampsListIntercepter"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/put-json-new-record"/>
+		 	<bean class="ru.notariat.client.mvc.interceptors.PutJsonNewRecordIntercepter"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/delete-record"/>
+		 	<bean class="ru.notariat.client.mvc.interceptors.DeleteRecordInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/change-timestamp-record"/>
+		 	<bean class="ru.notariat.client.mvc.interceptors.ChangeTimeStampRecordIntercepter"/>
+		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<bean id="dataSource"
