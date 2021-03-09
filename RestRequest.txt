@@ -1,0 +1,5 @@
+http://localhost:8080/client//get-json-documentsList?documentType=Realty
+http://localhost:8080/client/get-json-timeStampsList?firstStamp=2021-01-02 10:00:00&secondStamp=2021-01-02 18:00:00
+http://localhost:8080/client/put-json-new-record
+{"name":"Tolic","lastName":"Evtifiev"}
+http://localhost:8080/client/delete-record?recordId=51&userTelephone=+79219910012

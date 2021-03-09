@@ -126,7 +126,7 @@ public class RestServicesController {
 	public String changeTimestampOfRecord(@RequestParam("recordId") String recordId, @RequestParam("userTelephone") String userTelephone, @RequestParam("timestamp") String timestamp){
 		
 		try {
-			logger.info("Запрос на удаление записи: " + recordId + " " + userTelephone);
+			logger.info("Запрос на изменение записи: " + recordId + " " + userTelephone);
 			if (recordId == "") {
 				return "Ведите номер записи"; 
 			}
@@ -146,7 +146,7 @@ public class RestServicesController {
 			Timestamp newTimestamp = new Timestamp(Long.parseLong(timestamp));
 			
 			recordsDAO.changeTimeStampOfRecord(Integer.parseInt(recordId), newTimestamp);
-			return "Запись " + recordId + " успешно удалена."; 
+			return "Запись " + recordId + " успешно изменена."; 
 		}
 		catch (Exception e) {
 			return e.getMessage();
